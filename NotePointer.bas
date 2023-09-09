@@ -1,0 +1,3 @@
+Rem Note pointer
+Cls
+
