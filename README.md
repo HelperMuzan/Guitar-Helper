@@ -1,4 +1,4 @@
-# Guitar-Helper
+# Guitar Helper by HelperMuzan
 A personal project made to help me with my guitar journey.
 
 Currently includes:
