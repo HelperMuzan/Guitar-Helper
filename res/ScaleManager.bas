@@ -120,16 +120,14 @@ Function GetScaleNoteCount (scale$)
     End If
 End Function
 
-Function DisplayScrollingImage (x, y, index, image&)
+Sub DisplayScrollingImage (x, y, index, image&)
     index_a = index Mod 11
-
     _PutImage ((x - 25) + (34 * index_a), y - 8), image&, , (0, 0)-(447 - (34 * index_a), 120)
     _PutImage (x + 7, y - 9), image&, , (447 - (34 * index_a), 0)-(447, 120)
-    DisplayScrollingImage = 1
-End Function
+End Sub
 
 'Displays scales in graphics
-Function DisplayScales (x, y, w, h, dot_img&, rdot_img&, scale$, root)
+Sub DisplayScales (x, y, w, h, dot_img&, rdot_img&, scale$, root)
     ax = x - 16
     ay = y
     aw = w + 32
@@ -149,7 +147,6 @@ Function DisplayScales (x, y, w, h, dot_img&, rdot_img&, scale$, root)
             Next k
         Next j
     Next i
-    DisplayScales = 1
-End Function
+End Sub
 
 
