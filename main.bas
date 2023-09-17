@@ -35,7 +35,6 @@ Accepted_Strings(9) = "min pent"
 Accepted_Strings(10) = "pent"
 Accepted_Strings(11) = "pentatonic"
 
-'Program Loop
 Do
     Cls
     Line (800, -100)-(800, 900), _RGB32(255)
@@ -43,7 +42,6 @@ Do
 
     _Font HelveticaFont&
 
-    StringAccepted = 0
     Print "============================================================="
     Print , "    Guitar Helper By Helper Muzan"
     Print "============================================================="
@@ -52,52 +50,56 @@ Do
     Next I
 
     Print "============================================================="
-    Do
-        Input "Root Note: ", r
-        Input "Scale Type (Maj, Min, Min Pentatonic)? ", ScaleType$
 
-        'Checks if the input is correct
-        For J = 0 To 11:
-            If LCase$(ScaleType$) = Accepted_Strings(J) Then
-                StringAccepted = 1
-                If J < 6 Then
-                    If J < 3 Then
-                        ScaleType$ = "maj"
-                    Else
-                        ScaleType$ = "min"
-                    End If
-                End If
-                If J > 6 Then
-                    ScaleType$ = "pentatonic"
-                End If
-            End If
-        Next
+    Input "", inp$
+    SplitInput inp$, r, scaletype$
 
-        'For input incorrect:
-        If r > 11 Or StringAccepted = 0 Then
-            Print "Input invalid. Please try again."
+    StringAccepted = 0
+
+    For J = 0 To 11:
+        If LCase$(scaletype$) = Accepted_Strings(J) Then
+            StringAccepted = 1
+            Select Case J
+                Case Is < 3
+                    scaletype$ = "maj"
+                Case Is > 6
+                    scaletype$ = "pentatonic"
+                Case Else
+                    scaletype$ = "min"
+            End Select
         End If
+    Next
 
-    Loop Until r <= 11 And StringAccepted = 1
+    'For input given:
+    If r > 11 Or StringAccepted = 0 Then
+        Print Chr$(34); inp$; Chr$(34); " is not recognized as a valid input."
+        Select Case r
+            Case Not 0 TO 11
+                Print "Enter a valid root number. Use the given list to select a valid root number."
+        End Select
+        If StringAccepted = 0 Then
+            Print "Enter a valid scale type. Type "; Chr$(34); "help"; Chr$(34); " for more details."
+        End If
+    Else
+        Print PrintScale$(r, scaletype$)
+        DisplayScales 1000, 128, 423, 104, dot&, rdot&, scaletype$, r
+    End If
 
-    Print PrintScale$(r, ScaleType$)
-    a = DisplayScales(1000, 128, 423, 104, dot&, rdot&, ScaleType$, r)
-
-    If ScaleType$ = "maj" Then
+    If scaletype$ = "maj" Then
         Print "Major keys: I, IV, V"
         Print "Minor keys: II, III, VI"
         Print "Diminished key: VII"
         _Font HelveticaFont_L&
         _PrintString (1100, 16), "Major Scale"
-    ElseIf ScaleType$ = "min" Then
+    ElseIf scaletype$ = "min" Then
         _Font HelveticaFont_L&
         _PrintString (1100, 16), "Minor Scale"
-    ElseIf ScaleType$ = "pentatonic" Then
+    ElseIf scaletype$ = "pentatonic" Then
         _Font HelveticaFont_L&
         _PrintString (1025, 16), "Minor Pentatonic Scale"
     End If
-    _Font HelveticaFont&
-    Input "", inpt$
+
+    Sleep
 
 Loop Until LCase$(inpt$) = "exit"
 
@@ -105,4 +107,4 @@ Loop Until LCase$(inpt$) = "exit"
 System
 
 '$include: '.\res\ScaleManager.bas'
-'$Include: '.\res\DisplayScales.bas'
+'$Include: '.\res\InputProcessor.bas'
